@@ -6,7 +6,7 @@
 
 技术栈：`nba_api` + `FastAPI` + `WebSocket` + `RapidOCR`，本地可运行的完整最小实时系统。
 
-![License](https://img.shields.io/badge/license-MIT-blue) ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-blue) ![Python](https://img.shields.io/badge/python-3.10%2B-blue) ![CI](https://github.com/LHL-2006/nba-alert/actions/workflows/ci.yml/badge.svg)
 
 > ⚠️ 本项目为**个人本地工具，非官方产品**，与 NBA、ESPN 及各球队无任何隶属、授权或合作关系；NBA 及相关名称、商标归其各自所有者所有。
 

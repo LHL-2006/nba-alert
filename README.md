@@ -80,6 +80,13 @@ python run.py
 
 ## 二·五 桌面应用版（不打开 WorkBuddy 也能用）
 
+> 📦 **不想自己打包？** 到 [Releases](https://github.com/LHL-2006/nba-alert/releases/latest)
+> 下载 `NBAAlert-Windows-x64.zip`（约 121 MB，绿色免安装，自包含 Python 运行时）。
+> ⚠️ **解压整个文件夹**后双击 `NBAAlert.exe`；`_internal` 必须与 exe 同目录，
+> 只单独保存一个 exe 会报 `Failed to load Python DLL ... python313.dll`。
+
+自行从源码打包：
+
 ```bash
 python build_app.py
 ```
@@ -206,6 +213,11 @@ python -m unittest discover -s tests -t . -v
 **Q：想扩展事件类型？**
 `app/models.py` 的 `EventType` + `app/sources/classifier.py` 加一条规则，
 前端 `TYPES` / `COLORS` 补一个映射。
+
+**Q：双击 exe 报 `Failed to load Python DLL ... python313.dll`？**
+`_internal` 文件夹没和 exe 放在一起。本应用是 PyInstaller onedir 模式，exe 只是引导程序，
+Python 运行时与全部依赖都在 `_internal/` 里。重新下载完整 zip 并**解压整个文件夹**即可，
+不要只保存单个 exe；整个 `NBAAlert` 文件夹可以整体移动，但不能拆开。
 
 ---
 

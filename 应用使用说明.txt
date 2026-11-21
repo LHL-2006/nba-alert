@@ -1,13 +1,24 @@
 NBA 关注球员实时提醒 · 桌面应用版
 ========================================
 
+【⚠️ 先看这条：必须整个文件夹一起用】
+  本应用是「文件夹版」：NBAAlert.exe 必须和同目录下的 _internal 文件夹在一起！
+  整个 NBAAlert 文件夹可以整体复制/移动到任何位置，但绝不能只单独拿走 exe。
+
+  只复制一个 exe 双击，会报这个错：
+      Failed to load Python DLL '...\_internal\python313.dll'
+      LoadLibrary: 找不到指定的模块。
+  这不是程序损坏，而是运行时依赖目录（_internal）没跟过来。
+  从 GitHub Releases 下载时请下载 NBAAlert-Windows-x64.zip，并「解压整个文件夹」，
+  不要在下载目录里只保存单个 NBAAlert.exe。
+
 【启动】
   双击 NBAAlert.exe 即可。无需 WorkBuddy、无需 Python、无需命令行。
   启动后会自动打开默认浏览器到实时面板：http://127.0.0.1:8000
   程序常驻在屏幕右下角系统托盘，不占任务栏。
 
   放到桌面（只需做一次）：右键 NBAAlert.exe →「发送到」→「桌面快捷方式」，
-  以后直接双击桌面图标启动。
+  以后直接双击桌面图标启动（快捷方式指向本文件夹内的 exe，不要移动 exe 本身）。
 
 【托盘图标右键菜单】
   打开实时面板        打开/回到浏览器面板
@@ -34,7 +45,7 @@ NBA 关注球员实时提醒 · 桌面应用版
   未配置凭证的通道自动停用，Windows 桌面气泡通知开箱即用。
 
 【直播流地址怎么拿】
-  88看球这类聚合站点的流地址由 JS 动态生成，页面里没有明文 m3u8。
+  聚合类直播站点的流地址多由 JS 动态生成，页面里没有明文 m3u8。
   方式一：浏览器打开直播间 → F12 → Network → 过滤 .m3u8 → 复制地址
   方式二：项目 tools/probe_stream.py（源码版）可尝试探测明文地址
   把地址填进 config.yaml 的 vision.stream_url，重启服务即可启用画面 OCR。
@@ -54,3 +65,4 @@ NBA 关注球员实时提醒 · 桌面应用版
 
 【源码与重新打包】
   python build_app.py  →  dist/NBAAlert/NBAAlert.exe
+  源码仓库：https://github.com/LHL-2006/nba-alert

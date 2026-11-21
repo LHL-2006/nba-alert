@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# 本地凭证与运行时状态（切勿提交）
+.env
+*.log
+data/
+
+# PyInstaller 打包产物（体积大，且内含本机绝对路径）
+build/
+dist/
+*.spec
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

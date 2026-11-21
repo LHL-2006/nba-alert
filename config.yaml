@@ -1,0 +1,83 @@
+# NBA 关注球员实时提醒面板 - 配置文件
+# 所有 ${XXX} 会在加载时从环境变量读取（见 .env.example）
+
+app:
+  # demo=true 时不访问网络，回放内置样本事件，可立即看到完整链路
+  demo_mode: false
+  # 数据轮询间隔（秒）。别设太低，公开接口请保持礼貌
+  poll_interval_sec: 8
+  # 指定比赛日 YYYYMMDD；留空为今天
+  date: null
+  host: 127.0.0.1
+  port: 8000
+
+data_source:
+  # nba_api = 优先 NBA 官方 CDN（需网络可访问 cdn.nba.com / stats.nba.com）
+  # espn    = 使用 ESPN 公开实时逐回合数据（国内网络实测可用）
+  # auto    = 启动时探测，nba_api 不通则自动切 ESPN（推荐）
+  prefer: auto
+  timeout_sec: 15
+  # 连续失败多少次后降级
+  fail_threshold: 2
+  user_agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36"
+
+watch:
+  # 默认订阅的事件类型（单个球员未写 events 时使用）
+  default_events: [on_court, sub_in, sub_out, score, assist, turnover]
+  # 同一球员同一类型事件的冷却秒数，0 表示每条都推
+  cooldown_sec: 0
+  players:
+    - name: "LeBron James"
+      aliases: ["James", "勒布朗", "詹姆斯", "LBJ"]
+      team: "LAL"
+      jersey: "23"
+      events: [on_court, sub_in, sub_out, score, assist, turnover]
+    - name: "Stephen Curry"
+      aliases: ["Curry", "库里", "斯蒂芬"]
+      team: "GSW"
+      jersey: "30"
+      events: [on_court, sub_in, score, assist, turnover]
+
+vision:
+  enabled: true
+  # 直播流地址：m3u8 / 本地视频文件 / 摄像头编号。
+  # 聚合类直播站点的流地址多由 JS 动态生成，请用 tools/probe_stream.py 探测，
+  # 或在浏览器 F12 → Network 过滤 .m3u8 复制地址填到这里。
+  # 留空时 OCR 模块自动停用，上场判定回退到数据层换人事件（sub_in/sub_out）。
+  stream_url: ""
+  # auto | cv2 | ffmpeg
+  grabber: auto
+  # 每秒抽帧数，0.5 = 每 2 秒一帧
+  fps: 0.5
+  # 只识别画面区域 [x1,y1,x2,y2]（比例 0~1），null 为全画面。
+  # 例如只扫下半屏球衣区域：[0.0, 0.35, 1.0, 1.0]
+  roi: null
+  ocr_backend: rapidocr
+  min_score: 0.55
+  # 最近 N 帧内有 >= threshold 帧命中即判定在场
+  vote_window: 6
+  vote_threshold: 3
+  # 连续 N 帧未命中才判定离场（防止单帧漏检误判）
+  absent_frames: 8
+  # 是否启用球衣号码 → 球员映射
+  jersey_mode: true
+  # 是否允许用中文姓名/图文关键词匹配
+  text_mode: true
+
+notify:
+  channels: [wecom, desktop, email]
+  wecom:
+    webhook: "${WECOM_WEBHOOK}"
+  serverchan:
+    key: "${SERVERCHAN_KEY}"
+  desktop:
+    enabled: true
+    duration_sec: 8
+  email:
+    enabled: true
+    host: smtp.qq.com
+    port: 465
+    user: "${SMTP_USER}"
+    password: "${SMTP_PASS}"
+    to: []
+    subject_prefix: "[NBA 提醒]"
